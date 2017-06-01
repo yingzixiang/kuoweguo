@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/linkInfo.css">
+    <style>
+        .listTitle div{
+            font-size: 0.18rem;
+            float: left;
+            width:125px;
+            text-align: center;
+        }
+        .listContent_item div{
+            font-size: 0.18rem;
+            float: left;
+            width:125px;
+            text-align: center;
+        }
+        .outline{
+        	cursor:pointer;
+        }
+        .listTitle>div{margin-top:0.2rem;}
+        .listContent_item{width:2500px;}
+    </style>
+</head>
+<body>
+<div id="section">
+    <div class="left_part">
+        <ul>
+            <li class="left_partActive"><span>> 流量调度</span></li>
+        </ul>
+    </div>
+    <div class="right_part">
+        <div class="right_part_content">
+        	<div style="margin-top:0.5rem;">
+                <span>DNS：</span>
+                <input class="linkAddr" type="text">
+                <span>默认出口:</span>
+                <input class="linkName" type="text">
+                <span class="marginLeft">链路容量：</span>
+                <input class="linkCapacity" type="text" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"/>
+             </div>
+            <div class="listTitle">
+                <div><span>内网地址</span></div>
+                <div><span>DNS</span></div>
+                <div><span>默认出口</span></div>
+                <div><span>操作</span></div>
+                <div class="clear"></div>
+            </div>
+            <div class="listContent">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/scoket.js"></script>
+<script src="js/layer/layer.js"></script>
+<script src="js/common.js"></script>
+<script src="js/flowDispatch.js"></script>
+<script src="js/net.js"></script>
+<script>
+	$(function(){
+	  	 $.ajax({
+	 			url:"http://"+realname+"/v1/global/online?type=schedule",
+	 			type:'get',
+	 			dataType:'json',
+	 			success:function(data)
+	 			{
+	 				if(data.retcode == 0){
+		 				var dateHtml = "";
+		 				var arr=[];
+		 				var brr=[];
+		 				for (var o in data.value){
+		 					brr.push(o);
+		 					for( var v in data.value[o]){
+		 						if(v="default"){
+		 							var crr=[];
+		 							arr.push(data.value[o][v].default)	
+		 							for(var x in data.value[o][v]){
+			 							if(x != "default"){
+			 								crr.push(data.value[o][v][x])
+			 							}
+			 						}
+		 							if(crr.length == 0){
+		 								break;
+		 							}else{
+		 								var html1 = "";
+	 									for(var t=0; t<crr.length ;t++){
+			 								html1 += '<div><span>&nbsp;'+ crr[t] + '</span></div>'
+			 							}	
+		 							}
+		 						}
+		 					} 
+		 					if(html1 == "undefined" || html1 == null) html1 = "";
+		 					for(var i =0; i<brr.length; i++){
+								dateHtml += '<div class="listContent_item">';
+								dateHtml += '<div ><span>&nbsp;'+ brr[i] + '</span></div>';
+								dateHtml += '<div><span>&nbsp;' + '</span></div>'
+								dateHtml += '<div class="outline" onclick="flowDispatch(this)"><span>&nbsp;' + arr[i] + '</span></div>';
+								dateHtml += html1;
+								dateHtml += '<div><span class="amend">修改 </span><span> / <span class="delete"> 删除</span></span></div><div class="clear"></div></div>';
+			 				}
+		 				}
+		 				
+		 				$(".listContent").html(dateHtml);
+	 				}
+	 			},
+	 			error:function(){
+	 				alert("报错了！！！")
+	 			}
+	 	})
+	  })
+</script>
+</html>

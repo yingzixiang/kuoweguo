@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        .listTitle div{
+            font-size: 0.18rem;
+            float: left;
+            width:11%;
+            text-align: center;
+            margin-top: 0.2rem;
+        }
+        .listContent_item div{
+            font-size: 0.18rem;
+            float: left;
+            width:11%;
+            text-align: center;
+        }
+        .right_part_content{margin-top:0.5rem;}
+        
+        .layui-layer-btn{padding:0 10px;}
+		.layui-layer-btn>a{font-size:23px;}
+		
+		.listContent_item{margin-top:0.2rem}
+    </style>
+</head>
+<body>
+<div id="section">
+    <div class="left_part">
+        <ul>
+            <li><span>>  tproxy信息</span></li>
+            <li id="linkInfo" class="left_partActive"><span>>  链路信息</span></li>
+            <li><span>>  链路配置</span></li>
+            <li><span>>  本地DNS</span></li>
+        </ul>
+    </div>
+    <div class="right_part">
+        <div class="right_part_content">
+            <div>
+                <span>链路名称：</span>
+                <input class="linkAddr" type="text">
+                <span>链路别名：</span>
+                <input class="linkName" type="text">
+                <span class="marginLeft">链路容量：</span>
+                <input class="linkCapacity" type="text" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"/>
+                <span class="marginLeft">备注：</span>
+                <input class="linkRemarks" type="text">
+            </div>
+            <div>
+                <span>链路价格：</span>
+                <input class="linkPrice" type="text" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();">
+                <span class="marginLeft">启用：</span>
+                <select class="startUsing" name="">
+                    <option value=1>是</option>
+                    <option value=0>否</option>
+                </select>
+                <button class="add infoAdd">添加</button>
+                <button style="display: none" class="add infoChange">修改</button>
+            </div>
+            <div>
+                <select name="" id="">
+                    <option>机器名</option>
+                    <option>是</option>
+                    <option>否</option>
+                </select>
+                <input type="text" class="search_input">
+                <button class="search">搜索</button>
+                <button class="deleteSearch">撤销搜索</button>
+            </div>
+            <div class="listTitle">
+                <div><span>链路名称</span></div>
+                <div><span>链路别名</span></div>
+                <div><span>链路容量</span></div>
+                <div><span>链路价格</span></div>
+                <div><span>启用</span></div>
+                <div><span>使用状态</span></div>
+                <div class="second"><span>备注</span></div>
+                <div><span>操作</span></div>
+                <div class="clear"></div>
+            </div>
+            <div class="listContent">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/layer/layer.js"></script>
+<script src="js/common.js"></script>
+<script src="js/baseDisposition.js"></script>
+<script src="js/scoket.js"></script>
+<script src ="js/linkInfo.js"></script>
+
+<script>
+	$(function(){
+	  	 $.ajax({
+	 			url:"http://"+realname+"/v1/outlink/",
+	 			type:'get',
+	 			dataType:'json',
+	 			success:function(data)
+	 			{
+	 				if(data.retcode == 0){
+		 				var dateHtml = "";
+		 				for(var i =0; i<data.value.length;i++){
+							var isTure,isuse,anthorText;
+							if(data.value[i].Enable == 0) isTrue = "否";
+							else if(data.value[i].Enable != 0) isTrue = "是";
+							
+							if(data.value[i].Unavailable == 0) isuse = "可用";
+							else if(data.value[i].Unavailable != 0) isuse = "不可用";
+							
+							if(data.value[i].Remark == undefined || data.value[i].Remark == "") anthorText = "无"
+							else anthorText = data.value[i].Remark;
+							
+							dateHtml += '<div class="listContent_item">';
+							dateHtml += '<div class="listId">'+ data.value[i].Id +'</div>'
+							dateHtml += '<div ><span>&nbsp;'+ data.value[i].Addr + '</span></div>';
+							dateHtml += '<div><span>&nbsp;'+ data.value[i].Name + '</span></div>'
+							dateHtml += '<div ><span>&nbsp;' + data.value[i].Capacity + '</span></div>';
+							dateHtml += '<div ><span>&nbsp;'+ data.value[i].Price +'</span></div>'
+							dateHtml += '<div ><span>&nbsp;' + isTrue + '</span></div>';
+							dateHtml += '<div ><span>&nbsp;' + isuse + '</span></div>';
+							dateHtml += '<div class="second change"><span>&nbsp;'+ anthorText + '</span></div>';
+							dateHtml += '<div><span class="amend">修改 </span><span> / <span class="delete"> 删除</span></span></div><div class="clear"></div></div>';
+							
+		 				}
+		 				$(".listContent").html(dateHtml);
+	 				}
+	 			},
+	 			error:function(){
+	 				alert("报错了！！！")
+	 			}
+	 	})
+	  })
+</script>
+</html>

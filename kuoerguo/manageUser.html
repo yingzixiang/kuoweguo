@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/linkInfo.css">
+    <style>
+        .listTitle div{
+            font-size: 0.18rem;
+            float: left;
+            width:12.5%;
+            text-align: center;
+        }
+        .listContent_item div{
+            font-size: 0.18rem;
+            float: left;
+            width:12.5%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="section">
+    <div class="left_part">
+        <ul>
+            <li class="left_partActive"><span>>  管理用户</span></li>
+        </ul>
+    </div>
+    <div class="right_part">
+        <div class="right_part_content">
+            <h3>添加用户</h3>
+            <div>
+                <span class="marginLeft">用户名：</span>
+                <input type="text">
+                <span class="marginLeft">密码：</span>
+                <input type="text">
+                <select class="linkName" name="" id="">
+                    <option>启用</option>
+                    <option>是</option>
+                    <option>否</option>
+                </select>
+                <button class="add">添加</button>
+            </div>
+            <h3>用户信息</h3>
+            <div class="listTitle">
+                <div class="first"><span>个选</span></div>
+                <div><span>用户名</span></div>
+                <div><span>密码</span></div>
+                <div><span>权限</span></div>
+                <div><span>操作</span></div>
+                <div class="clear"></div>
+            </div>
+            <div class="listContent">
+                <div class="listContent_item">
+                    <div class="first"><span><input type="checkbox"></span></div>
+                    <div><span>a机器</span></div>
+                    <div><span>a机器</span></div>
+                    <div><span>a机器</span></div>
+                    <div><span class="amend">修改 </span><span> / <span class="delete"> 删除</span></span></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="listContent_item">
+                    <div class="first"><span><input type="checkbox"></span></div>
+                    <div><span>a机器</span></div>
+                    <div><span>a机器</span></div>
+                    <div><span>a机器</span></div>
+                    <div><span class="amend">修改 </span><span> / <span class="delete"> 删除</span></span></div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/common.js"></script>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/layer/layer.js"></script>
+<script src="js/delete.js"></script>
+</html>

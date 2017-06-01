@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/linkInfo.css">
+    <style>
+        .listTitle div{
+            font-size: 0.18rem;
+            float: left;
+            width:12.5%;
+            text-align: center;
+            margin-top:0.2rem;
+        }
+        .listContent_item div{
+            font-size: 0.18rem;
+            float: left;
+            width:12.5%;
+            text-align: center;
+        }
+        h3{padding-bottom:0.2rem;}
+        .layui-layer-btn-{text-align: center;}
+        .layui-layer-btn- a{font-size:16px;}
+    </style>
+</head>
+<body>
+<div id="section">
+    <div class="left_part">
+        <ul>
+            <li><span>>  tproxy信息</span></li>
+            <li><span>>  链路信息</span></li>
+            <li id="outLinkSet" class="left_partActive"><span>>  链路配置</span></li>
+            <li><span>>  本地DNS</span></li>
+        </ul>
+    </div>
+    <div class="right_part">
+        <div class="right_part_content">
+            <h3>链路配置信息填写</h3>
+            <div>
+                <select class="robName" name="" id="">
+                    <option>机器名</option>
+             
+                </select>
+                <select class="linkName" name="" id="">
+                    <option>链路名</option>
+                </select>
+                <span class="marginLeft">外网地址：</span>
+                <input class="OutAddr" type="text">
+                <span class="marginLeft">虚拟网关：</span>
+                <input class="VirtualGateway" type="text">
+                <span class="marginLeft">开启Nat：</span>
+                <select class="isNat">
+                	<option value=1>是</option>
+                	<option value=0>否</option>
+                </select>
+                <button class="add baseAdd">添加</button>
+                <button style="display: none" class="add baseChange">修改</button>
+            </div>
+            <div>
+                <select name="" id="">
+                    <option>机器名</option>
+                    <option>是</option>
+                    <option>否</option>
+                </select>
+                <input type="text" class="search_input">
+                <button class="search">搜索</button>
+                <button class="deleteSearch">撤销搜索</button>
+            </div>
+            <h3>链路配置信息</h3>
+            <div class="listTitle">
+                <div><span>链路名</span></div>
+                <div><span>机器名</span></div>
+                <div><span>外网地址</span></div>
+                <div><span>虚拟网关</span></div>
+                <div><span>开启NAT</span></div>
+                <div><span>操作</span></div>
+                <div class="clear"></div>
+            </div>
+            <div class="listContent">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/baseDisposition.js"></script>
+<script src="js/scoket.js"></script>
+<script src="js/layer/layer.js"></script>
+<script src="js/operationBase.js"></script>
+<script>
+	  $(function(){
+	  	var urlList = [];
+	  	//链路名
+	  	var firstUrl = "http://"+realname+"/v1/outlink/"  
+	  	//数据表
+	  	var secondUrl = "http://"+realname+"/v1/outlinkview/";
+	  	//机器名
+	  	var threeUrl = "http://"+realname+"/v1/tproxy/"
+	  	urlList = [firstUrl,secondUrl,threeUrl];
+	  	
+	  	for(var j=0;j<urlList.length;j++){
+		  	  $.ajax({
+	 			url:urlList[j],
+	 			type:'get',
+	 			async: false,
+	 			dataType:'json',
+	 			success:function(data)
+	 			{
+	 				if(j == 0 ){
+	 					var optionHtml = '';
+	 					for(var m =0 ; m<data.value.length;m++){
+	 						optionHtml += '<option data-num="'+ data.value[m].Id + '">' + data.value[m].Addr+'</option>'
+	 					}
+	 					$(".linkName").append(optionHtml);
+	 					
+	 				}else if(j==1){
+	 					var dateHtml = "";
+	 					for(var i =0; i<data.value.length;i++){
+							var isTure;
+							if(data.value[i].NatlinkStatus == 0) isTrue = "否";
+							else if(data.value[i].NatlinkStatus != 0) isTrue = "是";
+							
+							dateHtml += '<div class="listContent_item">';
+							dateHtml += '<div class="listId">'+ data.value[i].NatlinkId + '</div>'
+							dateHtml += '<div ><span>'+ data.value[i].OutlinkAddr + '</span></div>';
+							dateHtml += '<div ><span>' + data.value[i].TproxyName + '</span></div>';
+							dateHtml += '<div ><span>'+ data.value[i].NatlinkAddr +'</span></div>';
+							dateHtml += '<div ><span>'+ data.value[i].NatlinkGw +'</span></div>'
+							dateHtml += '<div ><span>' + isTrue + '</span></div>';
+							dateHtml += '<div><span class="amend">修改 </span><span> / <span class="delete"> 删除</span></span></div><div class="clear"></div></div>';
+	 					}
+	 					$(".listContent").html(dateHtml);
+	 				}else if(j==2){
+	 					var option2Html = '';
+	 					for(var m =0 ; m<data.value.length;m++){
+	 						option2Html += '<option data-num="'+ data.value[m].Id + '">' + data.value[m].Name+'</option>'
+	 					}
+	 					$(".robName").append(option2Html);
+	 				}
+	 				
+	 			},
+	 			error:function(){
+	 				alert("报错了！！！")
+	 			}
+	 		})
+		 
+		}
+
+	  })
+</script>
+</html>

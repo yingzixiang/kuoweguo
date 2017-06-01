@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<link rel="stylesheet" href="css/common.css">
+		<style>
+			.listTitle div {
+				font-size: 0.18rem;
+				float: left;
+				width: 20%;
+				text-align: center;
+				margin-top:0.2rem;
+			}
+			
+			.listContent_item div {
+				font-size: 0.18rem;
+				float: left;
+				width: 20%;
+				text-align: center;
+			}
+			
+			.right_part .first {
+				width: 10%;
+			}
+			
+			.right_part .second {
+				width: 15%;
+			}
+			
+			.outerNet {
+				cursor: pointer;
+			}
+			
+			.layui-layer-btn-{text-align:center !important;}
+			.layui-layer-btn- a{font-size:16px;}
+			
+			.hidden {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="section">
+			<div class="left_part">
+				<ul>
+					<li id="OutlinkAddr" class="left_partActive"><span>>  外网地址</span></li>
+					<li><span>> 外网地址特例</span>
+					<li><span>>  内网地址</span></li>
+					<li><span>>  内网地址特例</span></li>
+				</ul>
+			</div>
+			<div class="right_part">
+				<div class="right_part_content">
+					<div style="margin-top:0.5rem;">
+						<span>添加地址：</span>
+						<input class="OuterNetAddr" type="text">
+						<span class="marginLeft">备注：</span>
+						<input class="OuterNetRemarks" type="text">
+						<span class="marginLeft">流量调度：</span>
+						<select class="traffic-scheduling" name="" id="">
+							<option value="1">是</option>
+							<option value="0">否</option>
+						</select>
+						<button class="add OuterNetAdd">添加</button>
+						<button style="display: none" class="add OuterNetChange">修改</button>
+					</div>
+					<div style="margin-top:0.5rem;">
+						<span>搜索地址：</span>
+						<input type="text">
+						<button class="search">搜索</button>
+						<button class="deleteSearch">撤销搜索</button>
+					</div>
+					<h3>name信息</h3>
+					<div class="listTitle">
+						<div><span>外网地址</span></div>
+						<div><span>备注</span></div>
+						<div><span>流量调度</span></div>
+						<div class="second"><span>操作</span></div>
+						<div class="clear"></div>
+					</div>
+					<div class="listContent"></div>
+				</div>
+			</div>
+		</div>
+		<div id="hiddenVal" class="hidden"></div>
+	</body>
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script src="js/layer/layer.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/net.js"></script>
+	<script src="js/scoket.js"></script>
+	<script src="js/operationOutLink.js"></script>
+	<script>
+		$(function() {
+			$.ajax({
+				url: "http://" + realname + "/v1/netlink/",
+				type: 'get',
+				dataType: 'json',
+				success: function(data) {
+					if(data.retcode == 0) {
+						var dateHtml = "";
+						for(var i = 0; i < data.value.length; i++) {
+							var isTure;
+							if(data.value[i].Enable == 0) isTrue = "否";
+							else if(data.value[i].Enable != 0) isTrue = "是";
+
+							dateHtml += '<div class="listContent_item">';
+							dateHtml += '<div class="listId">' + data.value[i].Id + '</div>'
+							dateHtml += '<div class="outerNet" onclick="clickOut(this)"><span>&nbsp;' + data.value[i].Isp + '</span></div>';
+							dateHtml += '<div><span>&nbsp;' + data.value[i].Region + '</span></div>'
+							dateHtml += '<div><span>' + isTrue + '</span></div>';
+							dateHtml += '<div><span class="amend">修改 </span><span> / <span class="delete"> 删除</span></span></div><div class="clear"></div></div>';
+
+						}
+						$(".listContent").html(dateHtml);
+					}
+				},
+				error: function() {
+					alert("报错了！！！")
+				}
+			})
+		})
+
+	</script>
+
+</html>

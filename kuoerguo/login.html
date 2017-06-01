@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="login-page" style="">
+<div class="login-content">
+    <div class="login-panel">
+        <p class="logo animate0 bounceIn">
+            <img src="images/logo.png" alt="" style="width:254px;"/>
+        </p>
+
+        <form id="login" method="post">
+            <ol class="login-form">
+                <li class="animate1 bounceIn">
+                    <input class="acc" type="text" name="username" id="username" placeholder="管理员账号" autocomplete="off"/>
+                </li>
+                <li class="animate2 bounceIn">
+                    <input class="pass" type="password" name="password" id="password" placeholder="登录密码" autocomplete="off"/>
+                </li>
+                <li class="animate4 bounceIn">
+                    <button id="login-in" type="button">登 录</button>
+                </li>
+            </ol>
+        </form>
+    </div>
+</div>
+
+
+</body>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/scoket.js"></script>
+
+<script>
+    var imgArr=['bg1.jpg','bg2.jpg','bg3.jpg','bg4.jpg'];
+    function switchBg(){
+        var randomBgIndex = Math.floor(Math.random() * imgArr.length);
+        var img_url='images/'+imgArr[randomBgIndex];
+        $("body").css("background","url("+img_url+")");
+    }
+
+    $(function(){
+        switchBg();
+        setInterval("switchBg()",5000);
+        //跳出框架在主窗口登录
+        if(top.location!=this.location)	top.location=this.location;
+        $('#username').focus();
+
+    });
+    
+    //调用登陆接口
+	var usernames,passwords; 
+    $("#login-in").off().on("click",function(){
+
+    	usernames = $("#username").val();
+   		passwords = $("#password").val();
+		 $.ajax({
+	 			url:"http://"+realname+"/v1/user/login?username="+usernames+"&password="+passwords,
+	 			type:'get',
+	 			dataType:'json',
+	 			data:{"username":usernames,"password":passwords},
+
+	 			success:function(data)
+	 			{ 
+	 				//alert(xhr.getResponseHeader("Date"));
+	 				if(data.retcode == 0){
+	 					document.location.href = "index.html?username="+usernames+"&password="+passwords;
+	 				}
+	 			},
+	 			error:function(){
+	 				alert("报错了！！！")
+	 			}
+	 			
+	 	})
+
+})
+
+</script>
+</html>

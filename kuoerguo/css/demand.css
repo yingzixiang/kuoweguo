@@ -1,0 +1,30 @@
+#section .right_part h2{
+    font-size: 0.2rem;
+    color: #333;
+}
+.right_part span{
+    font-size: 0.16rem;
+}
+ .right_part div{
+    font-size: 0;
+     margin-top: 0.4rem;
+     margin-left: 0.2rem;
+}
+.right_part div input{
+    width:3.8rem;
+    height:0.3rem;
+}
+ .writeMessage{
+     margin-top: 0.2rem;
+     border-bottom: 1px solid #ccc;
+     padding-bottom: 1rem;
+ }
+ .demandBtn{
+     width:2rem;
+     height:0.48rem;
+     background-color: #009fec;
+     border:1px solid #009fec;
+     color: #fff;
+     font-size: 0.22rem;
+     margin-left: 1.4rem;
+ }
